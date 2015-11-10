@@ -2,5 +2,5 @@
 
 for file in *.txt
 do
-    python plotData.py $file 1
+    python plotData.py --datafile $file --noshow
 done
