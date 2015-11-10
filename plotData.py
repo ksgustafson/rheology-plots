@@ -1,26 +1,24 @@
-import sys
+import argparse
 import matplotlib.pyplot as plt
 
-datafile = sys.argv[1]
+# usage: plotData.py datafile [noshow]
 
-data = open(datafile,'r')
+parser = argparse.ArgumentParser(description='Process command line arguments')
+parser.add_argument('--datafile')
+parser.add_argument('--noshow', action='store_true')
 
-if len(sys.argv) >= 3:
-    noshow = sys.argv[2]  # 1 if plots should not be shown
-else:
-    noshow = 0
-    
-if len(sys.argv) >= 4:
-    plotFile = sys.argv[3]
-else:
-    l = datafile.split('.')
-    l.pop()
-    plotTitle = l[0]
-    l.append('.png')
-    l.insert(0,'plots/')
-    plotFile = ''.join(l)
+args = parser.parse_args()
 
-for i in range(11):
+data = open(args.datafile,'r')
+
+l = args.datafile.split('.')
+l.pop()
+plotTitle = l[0]
+l.append('.png')
+l.insert(0,'plots/')
+plotFile = ''.join(l)
+
+for i in range(11):    # ignore experiment info at start of file
     data.readline()
 
 shear = list()
@@ -41,5 +39,5 @@ plt.xlabel('Shear rate (1/s)')
 plt.ylabel('Viscosity (Pa s)')
 plt.title(plotTitle)
 plt.savefig(plotFile)
-if not noshow:
+if not args.noshow:
     plt.show()
