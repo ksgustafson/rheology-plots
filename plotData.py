@@ -2,6 +2,8 @@ import argparse
 import matplotlib.pyplot as plt
 
 # usage: plotData.py datafile [noshow]
+# use numpy's loadtxt function (numpy.loadtxt('file.txt', dtype=numpy.float64)
+# to load numbers, need to first save new file without first lines containing strings
 
 parser = argparse.ArgumentParser(description='Process command line arguments')
 parser.add_argument('--datafile')
