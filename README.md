@@ -28,3 +28,5 @@ plt.legend(['0 percent','0.5 percent','2.5 percent','5.0 percent'],bbox_to_ancho
 plt.savefig('filename')
 
 which will make a two column legend at the top of the figure, overlapping the top border slightly
+
+Plan to convert scripts for loading shear and viscosity data from a file to streamline all code, can have these as functions which return numpy arrays of shear values, viscosity values
