@@ -29,4 +29,4 @@ plt.savefig('filename')
 
 which will make a two column legend at the top of the figure, overlapping the top border slightly
 
-Plan to convert scripts for loading shear and viscosity data from a file to streamline all code, can have these as functions which return numpy arrays of shear values, viscosity values
+rheology.py is a module containing only one function so far, which is loading an experiment (loadExperiment(datafile))
