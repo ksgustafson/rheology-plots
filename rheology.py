@@ -26,3 +26,9 @@ def loadExperiment(datafile):
     viscosity = data[:,5:6]
 
     return shear, viscosity, plotFile, plotTitle
+
+def EinsteinPred(phi):
+    return (1 + 2.5*phi)
+
+def BatchAndGreenPred(phi):
+    return (EinsteinPred(phi) + 7.6*phi*phi)
