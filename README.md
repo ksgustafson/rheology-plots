@@ -29,4 +29,4 @@ plt.savefig('filename')
 
 which will make a two column legend at the top of the figure, overlapping the top border slightly
 
-rheology.py is a module containing only one function so far, which is loading an experiment (loadExperiment(datafile))
+rheology.py is a module which can load an experiment (loadExperiment(datafile)), or make predictions for viscosity of suspensions with volume fraction phi using Einstein or Batchelor and Green theory
