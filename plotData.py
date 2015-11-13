@@ -1,9 +1,9 @@
 import argparse
+import numpy
+import copy
 import matplotlib.pyplot as plt
 
 # usage: plotData.py datafile [noshow]
-# use numpy's loadtxt function (numpy.loadtxt('file.txt', dtype=numpy.float64)
-# to load numbers, need to first save new file without first lines containing strings
 
 parser = argparse.ArgumentParser(description='Process command line arguments')
 parser.add_argument('--datafile')
@@ -23,18 +23,20 @@ plotFile = ''.join(l)
 for i in range(11):    # ignore experiment info at start of file
     data.readline()
 
+numData = open(".temp","w")
+
+for line in data:
+    numData.write(line)
+
+numData.close()
+    
 shear = list()
 viscosity = list()
 
-for line in data:
-    if line.split():
-        templist = line.split()
-        temp = templist.pop(4)
-        shear.append(float(temp))
-        temp = templist.pop(4)
-        viscosity.append(float(temp))
+data = numpy.loadtxt(".temp", dtype=numpy.float64)
 
-data.close()
+shear = data[:,4:5]
+viscosity = data[:,5:6]
 
 plt.plot(shear, viscosity)
 plt.xlabel('Shear rate (1/s)')
@@ -43,3 +45,4 @@ plt.title(plotTitle)
 plt.savefig(plotFile)
 if not args.noshow:
     plt.show()
+
