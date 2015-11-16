@@ -32,18 +32,25 @@ def loadExperiment(datafile,labels):  # labels should be one if labels
 
 def avgMeasurements(expts):
     avgViscosity = 0
+    varViscosity = 0
     numExpts = 0
     for file in expts:
-        shear, viscosity = loadExperiment(file)
+        shear, viscosity = loadExperiment(file,0)
 
         temp = 0
         for vals in viscosity[len(viscosity)-5:len(viscosity)]:
             temp = temp + vals
-            
+
+        varViscosity = varViscosity + temp*temp/25
         avgViscosity = avgViscosity + temp/5
         numExpts = numExpts + 1
 
-    return avgViscosity/numExpts
+    avgViscosity = avgViscosity/numExpts
+    varViscosity = varViscosity/numExpts - avgViscosity*avgViscosity
+
+    errViscosity = numpy.sqrt(varViscosity/numExpts)
+    
+    return avgViscosity, errViscosity
 
 def EinsteinPred(phi):
     return (1 + 2.5*phi)

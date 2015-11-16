@@ -13,6 +13,7 @@ args = parser.parse_args()
 fileConcKeys = dict(zip(args.datafiles,args.phi))
 
 avgViscosity = dict()
+errViscosity = dict()
 
 for phiVal in set(args.phi):
     fileGroup = list()
@@ -21,13 +22,15 @@ for phiVal in set(args.phi):
         if (fileConcKeys[file] == phiVal):
             fileGroup.append(file)
 
-    avgViscosity[phiVal] = rheology.avgMeasurements(fileGroup)
+    avgViscosity[phiVal], errViscosity[phiVal] = rheology.avgMeasurements(fileGroup)
 
 phiList = list()
 normViscosity = list()
+stdErrViscosity = list()
 for keys in avgViscosity:
     phiList.append(keys)
     normViscosity.append(avgViscosity[keys]/avgViscosity[0])
+    stdErrViscosity.append(1.96*errViscosity[keys]/avgViscosity[0])
 
 phirange = numpy.arange(0,0.05,0.001)
     
@@ -38,8 +41,9 @@ for val in phirange:
 BandG = list()
 for val in phirange:
     BandG.append(rheology.BatchAndGreenPred(val))
-    
-plt.plot(phiList,normViscosity,'+',phirange,Einstein,phirange,BandG)
+
+plt.errorbar(phiList,normViscosity,yerr=stdErrViscosity, fmt='+')    
+plt.plot(phirange,Einstein,phirange,BandG)
 plt.xlabel('Particle Volume Fraction')
 plt.ylabel('Relative Viscosity')
 plt.legend(['Experimental','Einstein','Batchelor and Green'],loc='upper left')
