@@ -4,44 +4,45 @@ import numpy
 import rheology
 
 parser = argparse.ArgumentParser(description='Process command line arguments')
-parser.add_argument('datafiles', nargs='+', type=file)
+parser.add_argument('--datafiles', nargs='+')
+parser.add_argument('--phi', nargs='+', type=float)
 parser.add_argument('--noshow', action='store_true')
 
 args = parser.parse_args()
 
-avgViscosity = list()
+fileConcKeys = dict(zip(args.datafiles,args.phi))
 
-for data in args.datafiles:
-    tmp1, viscosity, tmp2, tmp3 = rheology.loadExperiment(data)
+avgViscosity = dict()
 
-    temp = 0
-    for vals in viscosity[len(viscosity)-5:len(viscosity)]:
-        temp = temp + vals
-    avgViscosity.append(temp/5)
-            
-    data.close()
+for phiVal in set(args.phi):
+    fileGroup = list()
 
-phi = [0, 0.005, 0.025, 0.05]
-phiexpt = [0, 0.005, 0.025, 0.05]
-#phiexpt = [0, 0.005, 0.005, 0.025, 0.025, 0.05, 0.05]
+    for file in args.datafiles:
+        if (fileConcKeys[file] == phiVal):
+            fileGroup.append(file)
 
+    avgViscosity[phiVal] = rheology.avgMeasurements(fileGroup)
+
+phiList = list()
 normViscosity = list()
-for val in avgViscosity:
-    normViscosity.append(val/avgViscosity[0])
+for keys in avgViscosity:
+    phiList.append(keys)
+    normViscosity.append(avgViscosity[keys]/avgViscosity[0])
 
+phirange = numpy.arange(0,0.05,0.001)
+    
 Einstein = list()
-for val in phi:
+for val in phirange:
     Einstein.append(rheology.EinsteinPred(val))
 
 BandG = list()
-for val in phi:
+for val in phirange:
     BandG.append(rheology.BatchAndGreenPred(val))
     
-plt.plot(phiexpt,normViscosity,'+',phi,Einstein,phi,BandG)
+plt.plot(phiList,normViscosity,'+',phirange,Einstein,phirange,BandG)
 plt.xlabel('Particle Volume Fraction')
 plt.ylabel('Relative Viscosity')
 plt.legend(['Experimental','Einstein','Batchelor and Green'],loc='upper left')
 plt.savefig('plots/EinsteinComparison.png')
-#plt.savefig('plots/EinsteinComparison2.png')
 if not args.noshow:
     plt.show()

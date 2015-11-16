@@ -30,7 +30,7 @@ def loadExperiment(datafile,labels):  # labels should be one if labels
     else:
         return shear, viscosity
 
-def avgMeasurements(expts)
+def avgMeasurements(expts):
     avgViscosity = 0
     numExpts = 0
     for file in expts:

@@ -5,7 +5,7 @@ import rheology
 # usage: plotData.py datafile [noshow]
 
 parser = argparse.ArgumentParser(description='Process command line arguments')
-parser.add_argument('datafiles', nargs='+', type=file)
+parser.add_argument('--datafiles', nargs='+')
 parser.add_argument('--noshow', action='store_true')
 
 args = parser.parse_args()
