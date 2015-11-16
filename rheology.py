@@ -1,7 +1,7 @@
 import numpy
 
-def loadExperiment(datafile):
-    data = open(datafile,'r')
+def loadExperiment(datafile,labels):  # labels should be one if labels
+    data = open(datafile,'r')         # should be returned
 
     l = datafile.split('.')
     l.pop()
@@ -25,7 +25,25 @@ def loadExperiment(datafile):
     shear = data[:,4:5]
     viscosity = data[:,5:6]
 
-    return shear, viscosity, plotFile, plotTitle
+    if labels:
+        return shear, viscosity, plotFile, plotTitle
+    else:
+        return shear, viscosity
+
+def avgMeasurements(expts)
+    avgViscosity = 0
+    numExpts = 0
+    for file in expts:
+        shear, viscosity = loadExperiment(file)
+
+        temp = 0
+        for vals in viscosity[len(viscosity)-5:len(viscosity)]:
+            temp = temp + vals
+            
+        avgViscosity = avgViscosity + temp/5
+        numExpts = numExpts + 1
+
+    return avgViscosity/numExpts
 
 def EinsteinPred(phi):
     return (1 + 2.5*phi)
