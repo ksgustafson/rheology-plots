@@ -55,5 +55,5 @@ def avgMeasurements(expts):
 def EinsteinPred(phi):
     return (1 + 2.5*phi)
 
-def BatchAndGreenPred(phi):
-    return (EinsteinPred(phi) + 7.6*phi*phi)
+def SimulationPred(phi):
+    return (1 + 1.5*phi/(1 - phi/0.58))*(1 + 1.5*phi/(1 - phi/0.58))

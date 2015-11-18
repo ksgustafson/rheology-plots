@@ -38,15 +38,15 @@ Einstein = list()
 for val in phirange:
     Einstein.append(rheology.EinsteinPred(val))
 
-BandG = list()
+Simulations = list()
 for val in phirange:
-    BandG.append(rheology.BatchAndGreenPred(val))
+    Simulations.append(rheology.SimulationPred(val))
 
 plt.errorbar(phiList,normViscosity,yerr=stdErrViscosity, fmt='+')    
-plt.plot(phirange,Einstein,phirange,BandG)
+plt.plot(phirange,Einstein,phirange,Simulations)
 plt.xlabel('Particle Volume Fraction')
 plt.ylabel('Relative Viscosity')
-plt.legend(['Experimental','Einstein','Batchelor and Green'],loc='upper left')
+plt.legend(['Experimental','Einstein','Simulations - Kulkarni et al (2008)'],loc='upper left')
 plt.savefig('plots/EinsteinComparison.png')
 if not args.noshow:
     plt.show()
